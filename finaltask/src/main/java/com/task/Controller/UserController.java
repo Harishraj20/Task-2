@@ -1,5 +1,7 @@
 package com.task.Controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +67,11 @@ public class UserController {
         if (userExists != null && userExists.getPassword().equals(password)) {
             service.updateCredentials(userExists);
             session.setAttribute("user", userExists);
+
+            List<User> users = service.fetchAllUsers();
+            System.out.println(users);
+            redirectAttributes.addFlashAttribute("UserList", users);
+            redirectAttributes.addFlashAttribute("loggedUser", userExists);
 
             return "redirect:/Details";
         } else {

@@ -1,12 +1,15 @@
 package com.task.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -46,15 +49,14 @@ public class UserRepository {
 
             Session session = sessionFactory.getCurrentSession();
             User user = session.createQuery("FROM User WHERE emailId = :emailId", User.class)
-            .setParameter("emailId", emailId)
-            .uniqueResult(); 
+                    .setParameter("emailId", emailId)
+                    .uniqueResult();
             if (user == null) {
                 System.out.println("User dont exists");
                 return null;
             } else {
                 System.out.println("User exists");
                 return user;
-             
 
             }
 
@@ -82,16 +84,30 @@ public class UserRepository {
             userLog.setUser(user);
             userLog.setLoginInfo(LocalDateTime.now());
             session.save(userLog);
-           
+
         } catch (HibernateException e) {
             System.out.println(e);
         } catch (Exception e) {
             System.out.println("General error: " + e);
         }
 
-      
     }
 
-  
+    public List<User> fetchUsers() {
+        Session session = sessionFactory.getCurrentSession();
+        List<User> users = null;
+
+        try {
+            Criteria criteria = session.createCriteria(User.class);
+            users = criteria.list();
+            System.out.println(users);
+        } catch (HibernateException e) {
+            System.out.println(e);
+        } catch (Exception e) {
+            System.out.println("General error: " + e);
+            return null;
+        }
+        return users;
+    }
 
 }

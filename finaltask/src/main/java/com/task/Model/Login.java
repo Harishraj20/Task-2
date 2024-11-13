@@ -18,7 +18,7 @@ public class Login {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int logId;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "user_id")
     private User user;
     private LocalDateTime loginInfo;

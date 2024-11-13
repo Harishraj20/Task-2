@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,7 +27,7 @@ public class User {
     private String gender;
     private int loginStatus = 0;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Login> logins;
 
     public User() {
@@ -129,10 +130,19 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", emailId=" + emailId
-                + ", dob=" + dob + ", designation=" + designation + ", role=" + role + ", gender=" + gender
-                + ", loginStatus=" + loginStatus + ", logins=" + logins + "]";
+        return "User Details: " +
+               "User ID - " + userId + ", " +
+               "Name - " + userName + ", " +
+               "Password - " + password + ", " +
+               "Email ID - " + emailId + ", " +
+               "Date of Birth - " + dob + ", " +
+               "Designation - " + designation + ", " +
+               "Role - " + role + ", " +
+               "Gender - " + gender + ", " +
+               "Login Status - " + loginStatus + ", " +
+               "Logins - " + logins;
     }
+    
 
 }
 

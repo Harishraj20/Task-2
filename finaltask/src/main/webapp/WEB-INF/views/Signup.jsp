@@ -29,7 +29,7 @@
           <form
             id="userForm"
             class="addUserForm"
-            action="/finaltask/Details/Signup/addUser"
+            action="/finaltask/add"
             onsubmit="return validateFields()"
             method="post"
           >
