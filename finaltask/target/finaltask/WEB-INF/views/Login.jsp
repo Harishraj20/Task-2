@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored =
+"false" %> 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
@@ -11,7 +13,7 @@
   <body>
     <div class="holder">
       <div class="heading">USER MANAGEMENT</div>
-      <div class="error-back">User doesn't exists</div>
+      <div class="error-back" id="errorMessage">${message}</div>
       <div class="form-container">
         <form id="loginForm" action="/finaltask/LoginUser" method="post">
           <div class="form-element">

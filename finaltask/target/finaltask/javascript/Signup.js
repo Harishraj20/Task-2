@@ -151,3 +151,12 @@ roleField.addEventListener("input", function () {
 emailField.addEventListener("input", function () {
     validateField(this, "emailerror");
 });
+
+
+const errorMessage = document.getElementById('errorMessage');
+
+if (errorMessage) {
+    setTimeout(function () {
+        errorMessage.style.visibility = 'hidden';
+    }, 5000);
+}

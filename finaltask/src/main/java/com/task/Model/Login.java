@@ -1,6 +1,6 @@
 package com.task.Model;
-
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,7 +19,7 @@ public class Login {
     private int logId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")  
+    @JoinColumn(name = "user_id")
     private User user;
     private LocalDateTime loginInfo;
 
@@ -46,11 +46,24 @@ public class Login {
     public void setUser(User user) {
         this.user = user;
     }
+
     public LocalDateTime getLoginInfo() {
         return loginInfo;
     }
 
     public void setLoginInfo(LocalDateTime loginInfo) {
         this.loginInfo = loginInfo;
+    }
+
+    public String getFormattedTime() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        return loginInfo.format(formatter);
+
+    }
+
+    public String getFormattedDate() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        return loginInfo.format(formatter);
+
     }
 }

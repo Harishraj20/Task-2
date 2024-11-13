@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Users Details</title>
     <link href="<c:url value='/css/table.css' />" rel="stylesheet" />
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -17,55 +18,71 @@
   </head>
   <body>
     <div class="user-details">
-      <p>User Details</p>
+      <div class="display-user">
+        <p>USER ID : 1001</p>
+      </div>
+      <div class="display-title">
+        <p>MANAGE USERS</p>
+      </div>
+
+      <div class="logout-field">
+        <form action="/finaltask/logout" method="get">
+          <input type="hidden" name="viewUser" value="1001" />
+          <button class="logout-btn">Log-out</button>
+        </form>
+      </div>
     </div>
+
+    <div class="addUser-btn">
+      <form action="/finaltask/Details/AddUser" method="get">
+        <input type="hidden" name="addUser" value="1001" />
+        <button class="add-btn">Add User</button>
+      </form>
+    </div>
+
     <div class="table-container">
       <table border="1">
         <thead>
           <tr>
-            <th style="width: 20%">User Id</th>
-            <th style="width: 20%">Name</th>      
+            <th style="width: 10%">User Id</th>
+            <th style="width: 20%">Name</th>
+            <th>Email Id</th>
+            <th>Designation</th>
+            <th>Role</th>
+            <th>Date of Birth</th>
             <th style="width: 20%">Actions</th>
           </tr>
         </thead>
         <tbody>
-          <c:choose>
-            <c:when test="${not empty userList}">
-              <c:forEach var="user" items="${userList}">
-                <tr>
-                  <td>${user.id}</td>
-                  <td>${user.userName}</td>
-                  <td>
-                    <form action="/finaltask/login/viewInfo" method="post">
-                      <input type="hidden" name="viewUser" value="${user.id}">
-                      <button>View</button>
-                    </form>
-                    <form action="/finaltask/login/editUser">
-                      <input type="hidden" name="editUserID" value="${user.id}">
-                      <button>Edit</button>
-                    </form>
-
-                    <form action="/finaltask/login/deleteUser">
-                      <input type="hidden" name="deleteUserID" value="${user.id}">
-                      <button>Delete</button>
-                    </form>
-                  </td>
-                </tr>
-              </c:forEach>
-            </c:when>
-            <c:otherwise>
-              <tr>
-                <td colspan="4" style="text-align: center">
-                  No data available
-                </td>
-              </tr>
-            </c:otherwise>
-          </c:choose>
+          <tr>
+            <td>1001</td>
+            <td>John Doe</td>
+            <td>john.doe@example.com</td>
+            <td>Manager</td>
+            <td>Admin</td>
+            <td>1990-05-15</td>
+            <td>
+              <div class="action-holder">
+                <form action="/finaltask/login/viewInfo" method="post">
+                  <input type="hidden" name="viewUser" value="1001" />
+                  <button class="btn view-btn">View</button>
+                </form>
+                <form action="/finaltask/login/editUser">
+                  <input type="hidden" name="editUserID" value="1001" />
+                  <button class="btn edit-btn">Edit</button>
+                </form>
+                <form action="/finaltask/login/deleteUser">
+                  <input type="hidden" name="deleteUserID" value="1001" />
+                  <button class="btn delete-btn">Delete</button>
+                </form>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
     <div class="button-container">
-      <form class="button-container" action="/finaltask/back" method="get">
+      <form action="/finaltask/back" method="get">
         <button class="back-button">
           <i class="fa-solid fa-arrow-left fa-xs"></i> Back
         </button>

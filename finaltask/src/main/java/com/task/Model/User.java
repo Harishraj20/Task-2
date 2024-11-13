@@ -13,14 +13,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "register_user")
 public class User {
-
-    @Override
-    public String toString() {
-        return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", emailId=" + emailId
-                + ", dob=" + dob + ", designation=" + designation + ", role=" + role + ", loginStatus=" + loginStatus
-                + ", logins=" + logins + "]";
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
@@ -31,7 +23,7 @@ public class User {
     private String dob;
     private String designation;
     private String role;
-
+    private String gender;
     private int loginStatus = 0;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
@@ -41,7 +33,7 @@ public class User {
     }
 
     public User(String userName, String password, String emailId, String dob, String designation, String role,
-                int loginStatus) {
+            int loginStatus, String gender) {
         this.userName = userName;
         this.password = password;
         this.emailId = emailId;
@@ -51,7 +43,10 @@ public class User {
         this.loginStatus = loginStatus;
     }
 
-    // Getters and Setters
+    public String getEmployeeId() {
+        return "Emp00" + userId;
+    }
+
     public int getUserId() {
         return userId;
     }
@@ -123,4 +118,22 @@ public class User {
     public void setLogins(List<Login> logins) {
         this.logins = logins;
     }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    @Override
+    public String toString() {
+        return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", emailId=" + emailId
+                + ", dob=" + dob + ", designation=" + designation + ", role=" + role + ", gender=" + gender
+                + ", loginStatus=" + loginStatus + ", logins=" + logins + "]";
+    }
+
 }
+
+

@@ -96,3 +96,12 @@ passwordField.onchange = () => {
     passwordError.style.visibility = "visible";
   }
 };
+const errorMessage = document.getElementById('errorMessage');
+
+if (errorMessage) {
+  setTimeout(function () {
+    errorMessage.style.visibility = 'hidden';
+  }, 5000);
+}
+
+
