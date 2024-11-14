@@ -35,7 +35,8 @@ prefix="c" %>
 
     <c:if test="${loggedUser.role eq 'admin'}">
       <div class="addUser-btn">
-        <form action="/finaltask/Details/AddUser" method="get">
+        <form action="/finaltask/Details/AddOrUpdate" method="get">
+          <input type="hidden" name="userId" value=''>
           <button class="add-btn">Add User</button>
         </form>
       </div>
@@ -65,13 +66,12 @@ prefix="c" %>
             <td>
               <div class="action-holder">
                 <form action="/finaltask/login/viewInfo" method="post">
+                  <input type="hidden" name="userId" value="${loggedUser.userId}">
+                  <input type="hidden" name="employeeId" value="${loggedUser.employeeId}">
                   <button class="btn view-btn">View</button>
                 </form>
                 <form action="/finaltask/login/editUser" method="post">
                   <button class="btn edit-btn">Edit</button>
-                </form>
-                <form action="/finaltask/login/deleteUser" method="post">
-                  <button class="btn delete-btn">Delete</button>
                 </form>
               </div>
             </td>
@@ -89,17 +89,26 @@ prefix="c" %>
                 <td>
                   <div class="action-holder">
                     <form action="/finaltask/login/viewInfo" method="post">
+                      <input type="hidden" name="userId" value="${user.userId}">
+                      <input type="hidden" name="employeeId" value="${user.employeeId}">
+
+
                       <button class="btn view-btn">View</button>
                     </form>
                     <c:choose>
                       <c:when test="${loggedUser.role eq 'admin'}">
-                        <form action="/finaltask/login/editUser" method="post">
+                        <form action="/finaltask/Details/AddOrUpdate" method="get">
+                          <input type="hidden" name="userId" value="${user.userId}">
+                          <input type="hidden" name="employeeId" value="${user.employeeId}">
                           <button class="btn edit-btn">Edit</button>
                         </form>
                         <form
                           action="/finaltask/login/deleteUser"
                           method="post"
+                          onsubmit="return confirm('Are you sure you want to the employee with id: ${user.employeeId}?');"
                         >
+                        <input type="hidden" name="userId" value="${user.userId}">
+                        <input type="hidden" name="employeeId" value="${user.employeeId}">
                           <button class="btn delete-btn">Delete</button>
                         </form>
                       </c:when>

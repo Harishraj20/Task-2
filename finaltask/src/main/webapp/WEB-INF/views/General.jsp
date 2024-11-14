@@ -1,12 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored =
-"false" %> <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+"false" %> 
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="<c:url value='/css/Signup.css' />" rel="stylesheet" />
-    <title>create user</title>
+    <title>${user != null ? 'Update User' : 'Create User'}</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -19,7 +20,7 @@
     <div class="container">
       <div class="holder">
         <div class="heading">
-          <h3 id="modal-title">ADD USERS</h3>
+          <h3 id="modal-title">${user != null ? 'Update User' : 'Create User'}</h3>
         </div>
         <div class="data-error" id="errorMessage">
           <p>${message}</p>
@@ -28,10 +29,11 @@
           <form
             id="userForm"
             class="addUserForm"
-            action="/finaltask/add"
+            action="${user != null ? '/finaltask/update' : '/finaltask/add'}"
             onsubmit="return validateFields()"
             method="post"
           >
+            <!-- <input type="hidden" name="userId" value="${user != null ? user.userId : ''}"> -->
             <div id="section-1" class="section">
               <div class="form-elements">
                 <label for="name">User Name:</label>
@@ -41,18 +43,22 @@
                   id="name"
                   placeholder="Enter User Name"
                   maxlength="30"
+                  value="${user != null ? user.userName : ''}"
                 />
               </div>
               <div id="nameError" class="error"></div>
 
               <div class="form-elements">
                 <label for="userPassword">Password:</label>
+
+
                 <input
                   type="password"
                   name="password"
                   id="userPassword"
                   class="password"
                   placeholder="Enter Password"
+                  value="${user != null ? user.password : ''}"
                 />
               </div>
               <div id="passwordError" class="error"></div>
@@ -65,6 +71,7 @@
                   id="confirm-password"
                   class="password"
                   placeholder="Re Enter the Password"
+                  value="${user != null ? user.password : ''}"
                 />
               </div>
               <div id="confirmPasswordError" class="error"></div>
@@ -77,6 +84,7 @@
                   id="email-field"
                   class="password"
                   placeholder="Enter Mail Id"
+                  value="${user != null ? user.emailId : ''}"
                 />
               </div>
               <div id="emailerror" class="error"></div>
@@ -91,47 +99,48 @@
                   id="dob-field"
                   class="password"
                   placeholder="Enter Date of Birth"
+                  value="${user != null ? user.dob : ''}"
                 />
               </div>
               <div id="dobError" class="error"></div>
               <div class="form-elements">
                 <label for="gender-field">Gender:</label>
                 <select name="gender" id="gender-field">
-                  <option value="" disabled selected>select</option>
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Others">Others</option>
+                    <option value="" disabled ${user == null ? 'selected' : ''}>select</option>
+                    <option value="Male" ${user != null && user.gender == 'Male' ? 'selected' : ''}>Male</option>
+                    <option value="Female" ${user != null && user.gender == 'Female' ? 'selected' : ''}>Female</option>
+                    <option value="Others" ${user != null && user.gender == 'Others' ? 'selected' : ''}>Others</option>
                 </select>
-              </div>
-              <div id="genderError" class="error"></div>
-
-              <div class="form-elements">
-                <label for="designation-field">Designation:</label>
-                <select name="designation" id="designation-field">
-                  <option value="" disabled selected>select</option>
-                  <option value="Trainee">Trainee</option>
-                  <option value="Flutter Developer">Flutter Developer</option>
-                  <option value="Java Developer">Java Developer</option>
-                  <option value="React Js Developer">React Js Developer</option>
-                  <option value="NodeJs Developer">NodeJs Developer</option>
-                  <option value="trainee">Python Developer</option>
-                  <option value="Manual Tester">Manual Tester</option>
-                  <option value="Automation Tester">Automation Tester</option>
-                  <option value="Support Engineer">Support Engineer</option>
-                  <option value="Devops Engineer">Devops Engineer</option>
-                </select>
-              </div>
-
-              <div id="designationError" class="error"></div>
-
-              <div class="form-elements">
-                <label for="role-field">Role:</label>
-                <select name="role" id="role-field">
-                  <option value="" disabled selected>select</option>
-                  <option value="admin">Admin</option>
-                  <option value="viewer">Viewer</option>
-                </select>
-              </div>
+            </div>
+            
+                <div id="genderError" class="error"></div>
+                
+                <div class="form-elements">
+                    <label for="designation-field">Designation:</label>
+                    <select name="designation" id="designation-field">
+                        <option value="" disabled ${user == null ? 'selected' : ''}>select</option>
+                        <option value="Trainee" ${user != null && user.designation == 'Trainee' ? 'selected' : ''}>Trainee</option>
+                        <option value="Flutter Developer" ${user != null && user.designation == 'Flutter Developer' ? 'selected' : ''}>Flutter Developer</option>
+                        <option value="Java Developer" ${user != null && user.designation == 'Java Developer' ? 'selected' : ''}>Java Developer</option>
+                        <option value="React Js Developer" ${user != null && user.designation == 'React Js Developer' ? 'selected' : ''}>React Js Developer</option>
+                        <option value="NodeJs Developer" ${user != null && user.designation == 'NodeJs Developer' ? 'selected' : ''}>NodeJs Developer</option>
+                        <option value="Python Developer" ${user != null && user.designation == 'Python Developer' ? 'selected' : ''}>Python Developer</option>
+                        <option value="Manual Tester" ${user != null && user.designation == 'Manual Tester' ? 'selected' : ''}>Manual Tester</option>
+                        <option value="Automation Tester" ${user != null && user.designation == 'Automation Tester' ? 'selected' : ''}>Automation Tester</option>
+                        <option value="Support Engineer" ${user != null && user.designation == 'Support Engineer' ? 'selected' : ''}>Support Engineer</option>
+                        <option value="Devops Engineer" ${user != null && user.designation == 'Devops Engineer' ? 'selected' : ''}>Devops Engineer</option>
+                    </select>
+                </div>
+                <div id="designationError" class="error"></div>
+                
+                <div class="form-elements">
+                    <label for="role-field">Role:</label>
+                    <select name="role" id="role-field">
+                        <option value="" disabled ${user == null ? 'selected' : ''}>select</option>
+                        <option value="admin" ${user != null && user.role == 'admin' ? 'selected' : ''}>Admin</option>
+                        <option value="viewer" ${user != null && user.role == 'viewer' ? 'selected' : ''}>Viewer</option>
+                    </select>
+                </div>
 
               <div id="roleError" class="error"></div>
             </div>

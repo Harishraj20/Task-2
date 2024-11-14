@@ -130,18 +130,17 @@ public class User {
 
     @Override
     public String toString() {
-        return "User Details: " +
-               "User ID - " + userId + ", " +
-               "Name - " + userName + ", " +
-               "Password - " + password + ", " +
-               "Email ID - " + emailId + ", " +
-               "Date of Birth - " + dob + ", " +
-               "Designation - " + designation + ", " +
-               "Role - " + role + ", " +
-               "Gender - " + gender + ", " +
-               "Login Status - " + loginStatus + ", " +
-               "Logins - " + logins;
+        return "User [userId=" + userId + ", userName=" + userName + ", password=" + password + ", emailId=" + emailId
+                + ", dob=" + dob + ", designation=" + designation + ", role=" + role + ", gender=" + gender
+                + ", loginStatus=" + loginStatus + "]";
     }
+
+    // @Override
+    // public String toString() {
+    //     return "User{id=" + userId + ", name=" + userName + ", logins.size=" + (logins != null ? logins.size() : 0) + "}";
+    // }
+    
+    
     
 
 }

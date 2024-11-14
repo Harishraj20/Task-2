@@ -19,8 +19,8 @@
   </head>
   <body>
     <div class="card">
-      <p class="message-content">${msg}</p>
-
+      <p class="message-content">${Message}</p>
+      
       <form class="button-container" action="/finaltask/back" method="get">
         <button class="back-button" type="submit">
           <i class="fa-solid fa-arrow-left fa-xs"></i> Back

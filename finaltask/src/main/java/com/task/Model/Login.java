@@ -66,4 +66,17 @@ public class Login {
         return loginInfo.format(formatter);
 
     }
+
+    @Override
+    public String toString() {
+        return "Login{id=" + logId + ", loginDate=" + loginInfo + "}";
+    }
+    
+
+    
+
+
+
+
+    
 }
