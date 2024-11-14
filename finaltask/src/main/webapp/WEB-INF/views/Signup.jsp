@@ -28,7 +28,7 @@
           <form
             id="userForm"
             class="addUserForm"
-            action="/finaltask/add"
+            action="/finaltask/users/message"
             onsubmit="return validateFields()"
             method="post"
           >

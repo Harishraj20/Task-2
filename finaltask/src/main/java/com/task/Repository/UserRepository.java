@@ -1,19 +1,14 @@
 package com.task.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
 import javax.transaction.Transactional;
-
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.task.Model.Login;
 import com.task.Model.User;
 
@@ -30,191 +25,136 @@ public class UserRepository {
 
     public String addUserInfo(User user) {
         try {
-
             Session session = sessionFactory.getCurrentSession();
             session.save(user);
-            return "User \"" + user.getUserName() + "\" Created Successfully!!";
+            return "User \"" + user.getUserName() + "\" Created Successfully!";
         } catch (HibernateException e) {
-            System.out.println(e);
-            return "Corrupted";
+            System.out.println("HibernateException in addUserInfo: " + e);
+            return "Error saving user due to HibernateException";
         } catch (Exception e) {
-            System.out.println("General error: " + e);
-            return "GeneralException";
+            System.out.println("Exception in addUserInfo: " + e);
+            return "Error saving user due to general exception";
         }
-
     }
 
     public User checkUserByEmailid(String emailId) {
-
         try {
-
             Session session = sessionFactory.getCurrentSession();
-            User user = session.createQuery("FROM User WHERE emailId = :emailId", User.class)
+            return session.createQuery("FROM User WHERE emailId = :emailId", User.class)
                     .setParameter("emailId", emailId)
                     .uniqueResult();
-            if (user == null) {
-                System.out.println("User dont exists");
-                return null;
-            } else {
-                System.out.println("User exists");
-                return user;
-
-            }
-
         } catch (HibernateException e) {
-            System.out.println(e);
-            System.out.println("due to H exception");
+            System.out.println("HibernateException in checkUserByEmailid: " + e);
             return null;
         } catch (Exception e) {
-            System.out.println("General error: " + e);
-            System.out.println("due to G exception");
-
+            System.out.println("Exception in checkUserByEmailid: " + e);
             return null;
         }
-
     }
 
     public void updateFields(User user) {
         try {
-
             Session session = sessionFactory.getCurrentSession();
-            user.setLoginStatus(user.getLoginStatus() + 1);
             session.update(user);
-
-            Login userLog = new Login();
-            userLog.setUser(user);
-            userLog.setLoginInfo(LocalDateTime.now());
-            session.save(userLog);
-
         } catch (HibernateException e) {
-            System.out.println(e);
+            System.out.println("HibernateException in updateFields: " + e);
         } catch (Exception e) {
-            System.out.println("General error: " + e);
+            System.out.println("Exception in updateFields: " + e);
         }
+    }
 
+    public void saveLoginInfo(Login loginInfo) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.save(loginInfo);
+        } catch (HibernateException e) {
+            System.out.println("HibernateException in saveLoginInfo: " + e);
+        } catch (Exception e) {
+            System.out.println("Exception in saveLoginInfo: " + e);
+        }
     }
 
     public List<User> fetchUsers() {
-        Session session = sessionFactory.getCurrentSession();
-        List<User> users = null;
-
         try {
+            Session session = sessionFactory.getCurrentSession();
             Criteria criteria = session.createCriteria(User.class);
-            users = criteria.list();
-            // System.out.println(users);
+            return criteria.list();
         } catch (HibernateException e) {
-            System.out.println(e);
+            System.out.println("HibernateException in fetchUsers: " + e);
+            return null;
         } catch (Exception e) {
-            System.out.println("General error: " + e);
+            System.out.println("Exception in fetchUsers: " + e);
             return null;
         }
-        return users;
     }
 
     public List<Login> getLoginById(int userId) {
-
-        Session session = sessionFactory.getCurrentSession();
-        List<Login> logins = null;
-
         try {
-
-            String hql = "FROM User u LEFT JOIN FETCH u.logins WHERE u.userId = :userId";
-            Query<User> query = session.createQuery(hql, User.class);
-            query.setParameter("userId", userId);
-
-            User user = query.uniqueResult();
-            logins = user.getLogins();
-
+            Session session = sessionFactory.getCurrentSession();
+            User user = session.createQuery("FROM User u LEFT JOIN FETCH u.logins WHERE u.userId = :userId", User.class)
+                    .setParameter("userId", userId)
+                    .uniqueResult();
+            return user != null ? user.getLogins() : null;
         } catch (HibernateException e) {
-            System.out.println("Hibernate exception:" + e);
+            System.out.println("HibernateException in getLoginById: " + e);
+            return null;
         } catch (Exception e) {
-            System.out.println("Run Time exception:" + e);
-
+            System.out.println("Exception in getLoginById: " + e);
+            return null;
         }
-
-        return logins;
-
     }
 
-    public boolean deleteUser(int user_id) {
-        Session session = sessionFactory.getCurrentSession();
-
+    public void deleteUser(int userId) {
         try {
-            System.out.println("into try block");
-            User user = session.get(User.class, user_id);
-            System.out.println(user);
-            session.delete(user);
-            System.out.println("deleetd successfully");
-
-            return true;
-
+            Session session = sessionFactory.getCurrentSession();
+            User user = session.get(User.class, userId);
+            if (user != null) {
+                session.delete(user);
+            }
         } catch (HibernateException e) {
-            System.out.println("Hibernate exception:" + e);
-            return false;
+            System.out.println("HibernateException in deleteUser: " + e);
         } catch (Exception e) {
-            System.out.println("Run Time exception:" + e);
-            return false;
-
+            System.out.println("Exception in deleteUser: " + e);
         }
-
     }
 
     public User findUser(int userIdForAction) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = null;
-
         try {
-            Criteria criteria = session.createCriteria(User.class);
-            criteria.add(Restrictions.eq("userId", userIdForAction));
-            user = (User) criteria.uniqueResult();
+            Session session = sessionFactory.getCurrentSession();
+            return session.get(User.class, userIdForAction);
         } catch (HibernateException e) {
-            System.out.println(e);
+            System.out.println("HibernateException in findUser: " + e);
+            return null;
         } catch (Exception e) {
-            System.out.println("General error: " + e);
+            System.out.println("Exception in findUser: " + e);
             return null;
         }
-        return user;
-
     }
 
-    public String updateUserInfo(User updateUser) {
-        Session session = sessionFactory.getCurrentSession();
-        String msg = "MailId already exists!!!";
-
+    public User findUserByEmailExcludingId(String emailId, int userId) {
         try {
-            Criteria criteria = session.createCriteria(User.class);
-
-            criteria.add(Restrictions.eq("emailId", updateUser.getEmailId()));
-            criteria.add(Restrictions.ne("userId", updateUser.getUserId()));
-
-            User existingUserWithEmail = (User) criteria.uniqueResult();
-
-            if (existingUserWithEmail != null) {
-                return msg;
-            }
-
-            criteria = session.createCriteria(User.class);
-            criteria.add(Restrictions.eq("userId", updateUser.getUserId()));
-            User existingUser = (User) criteria.uniqueResult();
-
-            if (existingUser != null) {
-                existingUser.setUserName(updateUser.getUserName());
-                existingUser.setDesignation(updateUser.getDesignation());
-                existingUser.setEmailId(updateUser.getEmailId());
-                existingUser.setDob(updateUser.getDob());
-                existingUser.setPassword(updateUser.getPassword());
-                existingUser.setGender(updateUser.getGender());
-                existingUser.setRole(updateUser.getRole());
-
-                session.update(existingUser);
-                return "User updated successfully!";
-            }
+            Session session = sessionFactory.getCurrentSession();
+            Criteria criteria = session.createCriteria(User.class)
+                    .add(Restrictions.eq("emailId", emailId))
+                    .add(Restrictions.ne("userId", userId));
+            return (User) criteria.uniqueResult();
         } catch (HibernateException e) {
-            System.out.println(e);
+            System.out.println("HibernateException in findUserByEmailExcludingId: " + e);
+            return null;
         } catch (Exception e) {
-            System.out.println("General error: " + e);
+            System.out.println("Exception in findUserByEmailExcludingId: " + e);
+            return null;
         }
-        return null;
     }
 
+    public void updateUser(User user) {
+        try {
+            Session session = sessionFactory.getCurrentSession();
+            session.update(user);
+        } catch (HibernateException e) {
+            System.out.println("HibernateException in updateUser: " + e);
+        } catch (Exception e) {
+            System.out.println("Exception in updateUser: " + e);
+        }
+    }
 }

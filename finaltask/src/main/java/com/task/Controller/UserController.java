@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.task.Model.Login;
@@ -41,8 +40,9 @@ public class UserController {
 
     }
 
-    @PostMapping("/add")
-    public String addmethod(@ModelAttribute User user,@RequestParam(required = false) Integer userId, Model model, RedirectAttributes redirectAttributes) {
+    @PostMapping("/users/message")
+    public String addmethod(@ModelAttribute User user, @RequestParam(required = false) Integer userId, Model model,
+            RedirectAttributes redirectAttributes) {
         String error;
         User userExists = service.checkUserByMailId(user.getEmailId());
 
@@ -59,30 +59,38 @@ public class UserController {
 
     }
 
-    @PostMapping("/LoginUser")
-    public String loginuser(@RequestParam String emailId, @RequestParam String password, HttpSession session,
-            Model model, RedirectAttributes redirectAttributes) {
-
+    @PostMapping("/users")
+    public String loginUser(@RequestParam String emailId, @RequestParam String password, HttpSession session,
+                            RedirectAttributes redirectAttributes) {
+    
         User userExists = service.checkUserByMailId(emailId);
         String msg;
-
+    
         if (userExists != null && userExists.getPassword().equals(password)) {
             service.updateCredentials(userExists);
             session.setAttribute("LoginUser", userExists);
-
+    
             List<User> users = service.fetchAllUsers();
-            // System.out.println(users);
-
-            model.addAttribute("UserList", users);
-            model.addAttribute("loggedUser", userExists);
-
-            return "Details";
+            session.setAttribute("UserList", users); 
+            return "redirect:/users";
         } else {
             msg = "Invalid email or password!";
             redirectAttributes.addFlashAttribute("message", msg);
             return "redirect:/";
         }
     }
+    
+    @GetMapping("/users")
+public String showUserPage(HttpSession session, Model model) {
+    // Fetch the latest UserList from the database instead of relying on the session
+    List<User> updatedUsers = service.fetchAllUsers();
+    model.addAttribute("UserList", updatedUsers);
+    model.addAttribute("loggedUser", session.getAttribute("LoginUser"));
+
+    return "Details";
+}
+
+
 
     @GetMapping("/Details")
 
@@ -96,17 +104,17 @@ public class UserController {
 
     }
 
-    @GetMapping("/Details/General")
+    // @GetMapping("/users/form")
 
-    public String redirectToSignUp(HttpSession session) {
-        if (session.getAttribute("LoginUser") == null) {
-            return "redirect:/";
+    // public String redirectToSignUp(HttpSession session) {
+    // if (session.getAttribute("LoginUser") == null) {
+    // return "redirect:/";
 
-        }
+    // }
 
-        return "General";
+    // return "General";
 
-    }
+    // }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
@@ -114,7 +122,7 @@ public class UserController {
         return "redirect:/";
     }
 
-    @PostMapping("/login/viewInfo")
+    @PostMapping("/users/viewInfo")
 
     public String viewinfos(@RequestParam String userId, @RequestParam String employeeId, Model model,
             HttpSession session) {
@@ -128,17 +136,17 @@ public class UserController {
         return "LoginInfo";
     }
 
-    @PostMapping("/login/deleteUser")
+    @PostMapping("/users/delete")
 
     public String deleteUser(@RequestParam String userId, Model model, HttpSession session) {
 
         int user_id = Integer.parseInt(userId);
         service.deleteUserById(user_id);
 
-        return "redirect:/LoginUser";
+        return "redirect:/users";
     }
 
-    @GetMapping("/Details/AddOrUpdate")
+    @GetMapping("/users/form")
     public String addOrUpdate(@RequestParam String userId, Model model) {
         if (userId.isEmpty() || userId == null) {
             model.addAttribute("user", null);
@@ -151,11 +159,11 @@ public class UserController {
         }
     }
 
-    @PostMapping("/update")
-    public String updatemethod(@ModelAttribute User updateUser, Model model,
+    @PostMapping("/user/update")
+    public String updatemethod(@ModelAttribute User updateUser, @RequestParam String refUserID, Model model,
             RedirectAttributes redirectAttributes) {
-
-        String msg = service.updateUsers(updateUser);
+        int paramId = Integer.parseInt(refUserID);
+        String msg = service.updateUsers(updateUser, paramId);
 
         model.addAttribute("Message", msg);
 

@@ -15,7 +15,7 @@
       <div class="heading">USER MANAGEMENT</div>
       <div class="error-back" id="errorMessage">${message}</div>
       <div class="form-container">
-        <form id="loginForm" action="/finaltask/LoginUser" method="post">
+        <form id="loginForm" action="/finaltask/users" method="post">
           <div class="form-element">
             <label for="mailIdField">EMAIL ID:</label>
             <input

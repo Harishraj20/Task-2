@@ -29,11 +29,11 @@
           <form
             id="userForm"
             class="addUserForm"
-            action="${user != null ? '/finaltask/update' : '/finaltask/add'}"
+            action="${user != null ? '/finaltask/user/update' : '/finaltask/user/add'}"
             onsubmit="return validateFields()"
             method="post"
           >
-            <!-- <input type="hidden" name="userId" value="${user != null ? user.userId : ''}"> -->
+            <input type="hidden" name="refUserID" value="${user != null ? user.userId : ''}">
             <div id="section-1" class="section">
               <div class="form-elements">
                 <label for="name">User Name:</label>

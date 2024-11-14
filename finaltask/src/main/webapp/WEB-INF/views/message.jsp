@@ -20,6 +20,7 @@
   <body>
     <div class="card">
       <p class="message-content">${Message}</p>
+      <p class="message-content">${msg}</p>
       
       <form class="button-container" action="/finaltask/back" method="get">
         <button class="back-button" type="submit">
