@@ -1,7 +1,9 @@
 package com.task.Repository;
 
 import java.util.List;
+
 import javax.transaction.Transactional;
+
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -9,6 +11,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.task.Model.Login;
 import com.task.Model.User;
 
@@ -23,17 +26,17 @@ public class UserRepository {
         this.sessionFactory = sessionFactory;
     }
 
-    public String addUserInfo(User user) {
+    public boolean addUserInfo(User user) {
         try {
             Session session = sessionFactory.getCurrentSession();
             session.save(user);
-            return "User \"" + user.getUserName() + "\" Created Successfully!";
+            return true; 
         } catch (HibernateException e) {
             System.out.println("HibernateException in addUserInfo: " + e);
-            return "Error saving user due to HibernateException";
+            return false;
         } catch (Exception e) {
             System.out.println("Exception in addUserInfo: " + e);
-            return "Error saving user due to general exception";
+            return false;
         }
     }
 
@@ -44,7 +47,7 @@ public class UserRepository {
                     .setParameter("emailId", emailId)
                     .uniqueResult();
         } catch (HibernateException e) {
-            System.out.println("HibernateException in checkUserByEmailid: " + e);
+            System.out.println("HibernateException : " + e);
             return null;
         } catch (Exception e) {
             System.out.println("Exception in checkUserByEmailid: " + e);
@@ -96,10 +99,10 @@ public class UserRepository {
                     .uniqueResult();
             return user != null ? user.getLogins() : null;
         } catch (HibernateException e) {
-            System.out.println("HibernateException in getLoginById: " + e);
+            System.out.println("HibernateException : " + e);
             return null;
         } catch (Exception e) {
-            System.out.println("Exception in getLoginById: " + e);
+            System.out.println("Exception : " + e);
             return null;
         }
     }
@@ -112,9 +115,9 @@ public class UserRepository {
                 session.delete(user);
             }
         } catch (HibernateException e) {
-            System.out.println("HibernateException in deleteUser: " + e);
+            System.out.println("HibernateException : " + e);
         } catch (Exception e) {
-            System.out.println("Exception in deleteUser: " + e);
+            System.out.println("Exception : " + e);
         }
     }
 
@@ -123,10 +126,10 @@ public class UserRepository {
             Session session = sessionFactory.getCurrentSession();
             return session.get(User.class, userIdForAction);
         } catch (HibernateException e) {
-            System.out.println("HibernateException in findUser: " + e);
+            System.out.println("HibernateException : " + e);
             return null;
         } catch (Exception e) {
-            System.out.println("Exception in findUser: " + e);
+            System.out.println("Exception : " + e);
             return null;
         }
     }
@@ -139,10 +142,10 @@ public class UserRepository {
                     .add(Restrictions.ne("userId", userId));
             return (User) criteria.uniqueResult();
         } catch (HibernateException e) {
-            System.out.println("HibernateException in findUserByEmailExcludingId: " + e);
+            System.out.println("HibernateException : " + e);
             return null;
         } catch (Exception e) {
-            System.out.println("Exception in findUserByEmailExcludingId: " + e);
+            System.out.println("Exception : " + e);
             return null;
         }
     }
@@ -152,9 +155,9 @@ public class UserRepository {
             Session session = sessionFactory.getCurrentSession();
             session.update(user);
         } catch (HibernateException e) {
-            System.out.println("HibernateException in updateUser: " + e);
+            System.out.println("HibernateException : " + e);
         } catch (Exception e) {
-            System.out.println("Exception in updateUser: " + e);
+            System.out.println("Exception : " + e);
         }
     }
 }

@@ -5,7 +5,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Users Details</title>
+    <title>Users Login</title>
     <link href="<c:url value='/css/LoginInfo.css' />" rel="stylesheet" />
 
     <link
@@ -61,7 +61,7 @@
       </table>
     </div>
     <div class="button-container">
-      <form action="/finaltask/back" method="get">
+      <form action="/finaltask/users" method="get">
         <button class="back-button">
           <i class="fa-solid fa-arrow-left fa-xs"></i> Back
         </button>

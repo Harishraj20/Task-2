@@ -29,7 +29,7 @@
           <form
             id="userForm"
             class="addUserForm"
-            action="${user != null ? '/finaltask/user/update' : '/finaltask/user/add'}"
+            action="${user != null ? '/finaltask/users/update' : '/finaltask/users/add'}"
             onsubmit="return validateFields()"
             method="post"
           >
@@ -59,6 +59,7 @@
                   class="password"
                   placeholder="Enter Password"
                   value="${user != null ? user.password : ''}"
+                  ${user != null && user.userId != LoggedInId ? 'disabled' : ''}
                 />
               </div>
               <div id="passwordError" class="error"></div>
@@ -72,6 +73,8 @@
                   class="password"
                   placeholder="Re Enter the Password"
                   value="${user != null ? user.password : ''}"
+                  ${user != null && user.userId != LoggedInId ? 'disabled' : ''}
+                 
                 />
               </div>
               <div id="confirmPasswordError" class="error"></div>
@@ -106,11 +109,11 @@
               <div class="form-elements">
                 <label for="gender-field">Gender:</label>
                 <select name="gender" id="gender-field">
-                    <option value="" disabled ${user == null ? 'selected' : ''}>select</option>
-                    <option value="Male" ${user != null && user.gender == 'Male' ? 'selected' : ''}>Male</option>
-                    <option value="Female" ${user != null && user.gender == 'Female' ? 'selected' : ''}>Female</option>
-                    <option value="Others" ${user != null && user.gender == 'Others' ? 'selected' : ''}>Others</option>
-                </select>
+                  <option value="" disabled ${user == null ? 'selected' : ''}>select</option>
+                  <option value="Male" ${user.gender == 'Male' ? 'selected' : ''}>Male</option>
+                  <option value="Female" ${user.gender == 'Female' ? 'selected' : ''}>Female</option>
+                  <option value="Others" ${user.gender == 'Others' ? 'selected' : ''}>Others</option>
+              </select>
             </div>
             
                 <div id="genderError" class="error"></div>
@@ -136,10 +139,10 @@
                 <div class="form-elements">
                     <label for="role-field">Role:</label>
                     <select name="role" id="role-field">
-                        <option value="" disabled ${user == null ? 'selected' : ''}>select</option>
-                        <option value="admin" ${user != null && user.role == 'admin' ? 'selected' : ''}>Admin</option>
-                        <option value="viewer" ${user != null && user.role == 'viewer' ? 'selected' : ''}>Viewer</option>
-                    </select>
+                      <option value="" disabled ${user == null ? 'selected' : ''}>select</option>
+                      <option value="admin" ${user.role == 'admin' ? 'selected' : ''}>Admin</option>
+                      <option value="viewer" ${user.role == 'viewer' ? 'selected' : ''}>Viewer</option>
+                  </select>
                 </div>
 
               <div id="roleError" class="error"></div>
@@ -158,7 +161,7 @@
         </div>
       </div>
       <div class="back-button">
-        <form action="" class="button-form">
+        <form action="/finaltask/users" class="button-form">
           <button class="back-but">
             <i class="fa-solid fa-arrow-left fa-xs"></i>Back
           </button>

@@ -35,6 +35,14 @@ prefix="c" %>
 
     <c:if test="${loggedUser.role eq 'admin'}">
       <div class="addUser-btn">
+        <form action="/finaltask/users/inactiveUsers" method="get">
+          <button class="add-btn">Inactive Users</button>
+        </form>
+  
+        <div class="message-content">
+          <p style="font-size: 25px">User Created successfully!</p>
+        </div>
+  
         <form action="/finaltask/users/form" method="get">
           <input type="hidden" name="userId" value=''>
           <button class="add-btn">Add User</button>
@@ -65,12 +73,14 @@ prefix="c" %>
             <td>${loggedUser.dob}</td>
             <td>
               <div class="action-holder">
-                <form action="/finaltask/users/viewInfo" method="post">
+                <form action="/finaltask/users/viewInfo" method="get">
                   <input type="hidden" name="userId" value="${loggedUser.userId}">
                   <input type="hidden" name="employeeId" value="${loggedUser.employeeId}">
                   <button class="btn view-btn">View</button>
                 </form>
-                <form action="/finaltask/users/form" method="post">
+                <form action="/finaltask/users/form" method="get">
+                  <input type="hidden" name="userId" value="${loggedUser.userId}">
+                  <input type="hidden" name="employeeId" value="${loggedUser.employeeId}">
                   <button class="btn edit-btn">Edit</button>
                 </form>
               </div>
@@ -88,7 +98,7 @@ prefix="c" %>
                 <td>${user.dob}</td>
                 <td>
                   <div class="action-holder">
-                    <form action="/finaltask/users/viewInfo" method="post">
+                    <form action="/finaltask/users/viewInfo" method="get">
                       <input type="hidden" name="userId" value="${user.userId}">
                       <input type="hidden" name="employeeId" value="${user.employeeId}">
 
@@ -120,14 +130,6 @@ prefix="c" %>
           </c:forEach>
         </tbody>
       </table>
-    </div>
-
-    <div class="button-container">
-      <form action="/finaltask/back" method="get">
-        <button class="back-button">
-          <i class="fa-solid fa-arrow-left fa-xs"></i> Back
-        </button>
-      </form>
     </div>
   </body>
 </html>

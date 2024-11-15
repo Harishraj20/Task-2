@@ -78,13 +78,14 @@ tr:nth-child(even) {
   color: #610000;
 }
 .addUser-btn {
-  width: 98%;
+  width: 90%;
   margin-bottom: 1%;
   height: 7%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
   margin-right: 5%;
+  margin-left: 5%;
 }
 .add-btn {
   padding: 10px;
@@ -97,6 +98,12 @@ tr:nth-child(even) {
 }
 .add-btn:hover {
   background-color: hsl(0, 75%, 27%);
+}
+.message-content {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 p {

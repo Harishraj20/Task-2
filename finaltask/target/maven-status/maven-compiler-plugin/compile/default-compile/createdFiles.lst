@@ -1,5 +1,7 @@
-com\task\Model\Login.class
 com\task\Repository\UserRepository.class
-com\task\Service\UserService.class
-com\task\Controller\UserController.class
+com\task\configs\SessionInterceptor.class
 com\task\Model\User.class
+com\task\Model\Login.class
+com\task\Service\UserService.class
+com\task\configs\WebConfig.class
+com\task\Controller\UserController.class
